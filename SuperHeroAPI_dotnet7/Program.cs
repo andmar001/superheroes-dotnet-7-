@@ -1,3 +1,5 @@
+global using SuperHeroAPI_dotnet7.Models; //Agregar la referencia a los modelos de manera global
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
