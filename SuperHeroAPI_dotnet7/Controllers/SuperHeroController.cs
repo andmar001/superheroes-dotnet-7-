@@ -69,13 +69,6 @@ namespace SuperHeroAPI_dotnet7.Controllers
             }
             return Ok(result);
         }
-
-        [HttpGet]
-        [Route("Test")]
-        public async Task<ActionResult> Ver()
-        {
-            List<SuperHero> hero = _superHeroService.GetAllHeroes();
-            return Ok(hero);
-        }
+        
     }
 }
