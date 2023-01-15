@@ -1,4 +1,5 @@
 global using SuperHeroAPI_dotnet7.Models; //Agregar la referencia a los modelos de manera global
+using SuperHeroAPI_dotnet7.Services.SuperHeroService;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -8,6 +9,9 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+//service superheroes
+builder.Services.AddScoped<ISuperHeroService, SuperHeroService>();
 
 var app = builder.Build();
 

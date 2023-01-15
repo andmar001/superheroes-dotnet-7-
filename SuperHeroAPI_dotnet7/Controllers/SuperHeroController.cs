@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using SuperHeroAPI_dotnet7.Models;
 using SuperHeroAPI_dotnet7.Services.SuperHeroService;
+using System.Threading.Tasks.Dataflow;
 
 namespace SuperHeroAPI_dotnet7.Controllers
 {
@@ -67,6 +68,14 @@ namespace SuperHeroAPI_dotnet7.Controllers
                 return NotFound("Hero not found");
             }
             return Ok(result);
+        }
+
+        [HttpGet]
+        [Route("Test")]
+        public async Task<ActionResult> Ver()
+        {
+            List<SuperHero> hero = _superHeroService.GetAllHeroes();
+            return Ok(hero);
         }
     }
 }
