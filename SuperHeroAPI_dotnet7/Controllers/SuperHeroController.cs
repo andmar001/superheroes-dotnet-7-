@@ -85,5 +85,17 @@ namespace SuperHeroAPI_dotnet7.Controllers
 
             return Ok(superHeroes);
         }
+
+        [HttpDelete("{id}")]
+        public async Task<ActionResult<List<SuperHero>>> DeleteHero(int id)
+        {
+            var hero = superHeroes.Find(x => x.Id == id);
+            if (hero == null)
+            {
+                return NotFound("Sorry, but this hero doesn´t exist");
+            }
+            superHeroes.Remove(hero);
+            return Ok(superHeroes);
+        }
     }
 }
