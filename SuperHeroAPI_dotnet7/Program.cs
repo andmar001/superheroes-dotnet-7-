@@ -1,4 +1,5 @@
 global using SuperHeroAPI_dotnet7.Models; //Agregar la referencia a los modelos de manera global
+using SuperHeroAPI_dotnet7.Data;
 using SuperHeroAPI_dotnet7.Services.SuperHeroService;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -12,6 +13,8 @@ builder.Services.AddSwaggerGen();
 
 //service superheroes
 builder.Services.AddScoped<ISuperHeroService, SuperHeroService>();
+//contexto de la base de datos
+builder.Services.AddDbContext<DataContext>();
 
 var app = builder.Build();
 

@@ -69,6 +69,5 @@ namespace SuperHeroAPI_dotnet7.Controllers
             }
             return Ok(result);
         }
-        
     }
 }
