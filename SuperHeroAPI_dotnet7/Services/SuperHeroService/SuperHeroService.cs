@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using SuperHeroAPI_dotnet7.Data;
 using SuperHeroAPI_dotnet7.Models;
 
 namespace SuperHeroAPI_dotnet7.Services.SuperHeroService
@@ -33,51 +34,60 @@ namespace SuperHeroAPI_dotnet7.Services.SuperHeroService
             }
         };
 
-        public List<SuperHero>? GetAllHeroes()
+        //inyección de datacontex
+        private readonly DataContext _context;
+
+        public SuperHeroService(DataContext context)
         {
-            return superHeroes;
+            _context = context;
         }
-        public SuperHero? GetSingleHero(int id)
+
+        public async Task<List<SuperHero>> GetAllHeroes()
         {
-            var hero = superHeroes.Find(x => x.Id == id);
+            var heroes = await _context.SuperHeroes.ToListAsync();
+            return heroes;
+        }
+        public async Task<SuperHero?> GetSingleHero(int id)
+        {
+            var hero = await _context.SuperHeroes.FindAsync(id);
 
-            if (hero == null)
-            {
-                throw new Exception("Sorry, but this hero doesn´t exist");
-            }
-
+            if (hero is null)
+                return null;
+            
             return hero;
         }
-        public List<SuperHero> AddHero([FromBody] SuperHero hero)
+        public async Task<List<SuperHero>> AddHero([FromBody] SuperHero hero)
         {   
-            superHeroes.Add(hero);
-            return superHeroes;
+            _context.SuperHeroes.Add(hero);
+            await _context.SaveChangesAsync();
+            return await _context.SuperHeroes.ToListAsync();
         }
-        public List<SuperHero>? UpdateHero(int id, [FromBody] SuperHero request)
+        public async Task<List<SuperHero>?> UpdateHero(int id, [FromBody] SuperHero request)
         {
             //search id 
-            var hero = superHeroes.Find(x => x.Id == id);
-            if (hero == null)
-            {
-                throw new Exception("Sorry, but this hero doesn´t exist");
-            }
+            var hero = await _context.SuperHeroes.FindAsync(id);
+            if (hero is null)
+                return null;
 
             hero.FirstName = request.FirstName;
             hero.LastName = request.LastName;
             hero.Name = request.Name;
             hero.Place = request.Place;
 
-            return superHeroes;
+            await _context.SaveChangesAsync();
+
+            return await _context.SuperHeroes.ToListAsync();
         }
-        public List<SuperHero>? DeleteHero(int id)
+        public async Task<List<SuperHero>?> DeleteHero(int id)
         {
-            var hero = superHeroes.Find(x => x.Id == id);
-            if (hero == null)
-            {
-                throw new Exception("Sorry, but this hero doesn´t exist");
-            }
-            superHeroes.Remove(hero);
-            return superHeroes;
+            var hero = await _context.SuperHeroes.FindAsync(id);
+            if (hero is null)
+                return null;
+
+            _context.SuperHeroes.Remove(hero);
+            await _context.SaveChangesAsync();
+
+            return await _context.SuperHeroes.ToListAsync();
         }
     }
 }
